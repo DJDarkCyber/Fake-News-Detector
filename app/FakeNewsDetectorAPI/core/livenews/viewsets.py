@@ -16,7 +16,14 @@ def get_new_news_from_api():
 
     news_titles = [article["webTitle"] for article in news_data["response"]["results"]]
     news_publication_dates = [article["webPublicationDate"] for article in news_data["response"]["results"]]
-    news_categories = [article["pillarName"] for article in news_data["response"]["results"]]
+    news_categories = []
+
+    for article in news_data["response"]["results"]:
+        try:
+            news_categories.append(article["pillarName"])
+        except KeyError:
+            news_categories.append("Undefined")
+    # news_categories = [article["pillarName"] for article in news_data["response"]["results"]]
     section_id = [article["sectionId"] for article in news_data["response"]["results"]]
     section_name = [article["sectionName"] for article in news_data["response"]["results"]]
     type = [article["type"] for article in news_data["response"]["results"]]
