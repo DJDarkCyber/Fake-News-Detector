@@ -8,8 +8,11 @@ from .models import LiveNews
 from .serializers import LiveNewsSerializer, LiveNewsDetailedSerializer
 from core.model import load_models
 
+import threading
+import time
 
-def get_new_news_from_api():
+
+def get_new_news_from_api_and_update():
     """Gets news from the guardian news using it's API"""
     news_data = requests.get("https://content.guardianapis.com/search?api-key=e705adff-ca49-414e-89e2-7edede919e2e")
     news_data = news_data.json()
@@ -29,8 +32,52 @@ def get_new_news_from_api():
     type = [article["type"] for article in news_data["response"]["results"]]
     web_url = [article["webUrl"] for article in news_data["response"]["results"]]
 
-    return {'title': news_titles, 'publication_date': news_publication_dates, 'category': news_categories,
-            'section_id': section_id, 'section_name': section_name, 'type': type, 'web_url': web_url}
+    nb_model, vect_model = load_models()
+
+    for i in range(len(news_titles)):
+            title_ = news_titles[i]
+            publication_date_ = news_publication_dates[i]
+            category_ = news_categories[i]
+            section_id_ = section_id[i]
+            section_name_ = section_name[i]
+            type_ = type[i]
+            web_url_ = web_url[i]
+
+            if not LiveNews.objects.filter(web_url=web_url_).exists():
+
+                vectorized_text = vect_model.transform([title_])
+                prediction = nb_model.predict(vectorized_text)
+                prediction_bool = True if prediction[0] == 1 else False
+
+                news_article = LiveNews(
+                    title=title_,
+                    publication_date=publication_date_,
+                    news_category=category_,
+                    prediction=prediction_bool,
+                    section_id=section_id_,
+                    section_name=section_name_,
+                    type=type_,
+                    web_url=web_url_
+
+                )
+
+                news_article.save()
+
+
+def auto_refresh_news():
+    get_new_news_from_api_and_update()
+    
+
+    interval = 10
+    while True:
+        print("Thread running!")
+        get_new_news_from_api_and_update()
+        time.sleep(interval)
+
+
+auto_refresh_thread = threading.Thread(target=auto_refresh_news)
+auto_refresh_thread.daemon = True
+auto_refresh_thread.start()
 
 
 class LiveNewsPrediction(viewsets.ViewSet):
@@ -38,7 +85,7 @@ class LiveNewsPrediction(viewsets.ViewSet):
 
     def list(self, request):
         """Handles GET request by displaying all newly retrieved in database."""
-        all_live_news = LiveNews.objects.all()
+        all_live_news = LiveNews.objects.all().order_by('-id')[:10]
 
         serializer = LiveNewsSerializer(all_live_news, many=True)
 
@@ -54,41 +101,3 @@ class LiveNewsPrediction(viewsets.ViewSet):
         serializer = LiveNewsDetailedSerializer(news_prediction)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def create(self, request):
-        """When a post request is sent, the news will get updated."""
-        nb_model, vect_model = load_models()
-
-        LiveNews.objects.all().delete()
-
-        new_news = get_new_news_from_api()
-
-        for i in range(len(new_news['title'])):
-            title = new_news['title'][i]
-            publication_date = new_news['publication_date'][i]
-            category = new_news['category'][i]
-            section_id = new_news['section_id'][i]
-            section_name = new_news['section_name'][i]
-            type = new_news['type'][i]
-            web_url = new_news['web_url'][i]
-
-
-            vectorized_text = vect_model.transform([title])
-            prediction = nb_model.predict(vectorized_text)
-            prediction_bool = True if prediction[0] == 1 else False
-
-            news_article = LiveNews(
-                title=title,
-                publication_date=publication_date,
-                news_category=category,
-                prediction=prediction_bool,
-                section_id=section_id,
-                section_name=section_name,
-                type=type,
-                web_url=web_url
-
-            )
-
-            news_article.save()
-
-        return Response("News Refreshed", status.HTTP_201_CREATED)

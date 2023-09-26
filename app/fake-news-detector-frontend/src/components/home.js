@@ -21,7 +21,6 @@ function Home() {
   }
 
   const [liveNewsData, setLiveNewsData] = useState([]);
-  const [refreshingStatus, setRefreshingStatus] = useState(false);
   const [selectedNewsId, setSelectedNewsId] = useState(null);
   const [selectedNewsData, setSelectedNewsData] = useState(initialState);
 
@@ -37,25 +36,16 @@ function Home() {
       });
   };
 
-  // Function to refresh news
-  const refreshNews = () => {
-    setRefreshingStatus(true);
-    Axios.post('http://127.0.0.1:8000/api/live/')
-      .then(() => {
-        // After the POST request is successful, fetch the updated data with a GET request
-        fetchLiveNewsData();
-      })
-      .catch((error) => {
-        console.error('Error', error);
-      }).finally(() => {
-        setRefreshingStatus(false);
-        toast.success("News refreshed!");
-      });
-  };
-
   // Fetch initial live news data on component mount
   useEffect(() => {
     fetchLiveNewsData();
+
+    const intervalId = setInterval(() => {
+      fetchLiveNewsData();
+
+    }, 10000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const infoAboutNews = (newsId) => {
@@ -70,23 +60,16 @@ function Home() {
       });
   };
   
-
   const clearSelectedNews = () => {
     setSelectedNewsId(null);
   };
-
 
   return (
     <>
       <Header activeContainer={stage} />
       <Container className="home-container">
         <div className="live-news-container-header">
-          <img src={process.env.PUBLIC_URL + '/live.png'} height={70} className="logo-image" alt="Live News" />
-          <span className="refresh-button-container">
-            <Button variant="light" onClick={refreshNews}>
-              {refreshingStatus === true ? <>Refreshing...</>: <>Refresh News</>}
-            </Button>
-          </span>
+          <img src={process.env.PUBLIC_URL + '/live.gif'} height={30} className="logo-image" alt="Live News" />
         </div>
 
         <Container className="live-news-container">
