@@ -4,13 +4,14 @@ from rest_framework import status
 
 import requests
 
+from bs4 import BeautifulSoup
+
 from .models import LiveNews
 from .serializers import LiveNewsSerializer, LiveNewsDetailedSerializer
 from core.model import load_models
 
 import threading
 import time
-
 
 def get_new_news_from_api_and_update():
     """Gets news from the guardian news using it's API"""
@@ -34,6 +35,21 @@ def get_new_news_from_api_and_update():
 
     nb_model, vect_model = load_models()
 
+    def scrap_img_from_web(url):
+        print(url)
+        r = requests.get(url)
+        web_content = r.content
+        soup = BeautifulSoup(web_content, 'html.parser')
+        imgs = soup.find_all('article')[0].find_all('img', class_='dcr-evn1e9')
+        img_urls = []
+        for img in imgs:
+            src = img.get("src")
+            img_urls.append(src)
+        
+        if not img_urls:
+            return "None"
+        return img_urls[0]
+
     for i in range(len(news_titles)):
             title_ = news_titles[i]
             publication_date_ = news_publication_dates[i]
@@ -42,13 +58,16 @@ def get_new_news_from_api_and_update():
             section_name_ = section_name[i]
             type_ = type[i]
             web_url_ = web_url[i]
+            
 
             if not LiveNews.objects.filter(web_url=web_url_).exists():
-
+                
                 vectorized_text = vect_model.transform([title_])
                 prediction = nb_model.predict(vectorized_text)
                 prediction_bool = True if prediction[0] == 1 else False
 
+                img_url_ = scrap_img_from_web(web_url_)
+                
                 news_article = LiveNews(
                     title=title_,
                     publication_date=publication_date_,
@@ -57,7 +76,8 @@ def get_new_news_from_api_and_update():
                     section_id=section_id_,
                     section_name=section_name_,
                     type=type_,
-                    web_url=web_url_
+                    web_url=web_url_,
+                    img_url=img_url_
 
                 )
 

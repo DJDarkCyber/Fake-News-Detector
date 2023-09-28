@@ -6,7 +6,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 import Axios from 'axios';
 
 function CheckByTitle() {
-  document.title = 'FND | Check news by title';
+  document.title = 'News Guardian | Check news by title';
   let stage = 2;
   const [inputNewsTitle, setNewsTitle] = useState('');
   const [predictedValue, setPredictedValue] = useState('');

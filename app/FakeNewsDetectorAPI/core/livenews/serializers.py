@@ -8,7 +8,7 @@ class LiveNewsSerializer(serializers.ModelSerializer):
         model = LiveNews
         fields = (
                     'id', 'title', 'publication_date',
-                    'news_category', 'prediction'
+                    'news_category', 'prediction', 'img_url',
                  )
 
 
@@ -19,5 +19,5 @@ class LiveNewsDetailedSerializer(serializers.ModelSerializer):
         fields = (
                     'id', 'title', 'publication_date',
                     'news_category', 'prediction', 'section_id',
-                    'section_name', 'type', 'web_url'
+                    'section_name', 'type', 'web_url', 'img_url'
                  )

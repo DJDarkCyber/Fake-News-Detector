@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Row, Col } from 'react-bootstrap';
 import Header from './header';
 import { Check2, X } from 'react-bootstrap-icons';
 import Axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Home() {
-  document.title = 'FND | Home';
+  document.title = 'News Guardian | Home';
   let stage = 1;
 
   const initialState = {
@@ -68,6 +68,16 @@ function Home() {
     <>
       <Header activeContainer={stage} />
       <Container className="home-container">
+        {/* <Container>
+          <Row>
+            <Col xs={12} md={8}>
+              {liveNewsData}
+            </Col>
+            <Col xs={6} md={4}>
+              xs=6 md=4
+            </Col>
+          </Row>
+        </Container> */}
         <div className="live-news-container-header">
           <img src={process.env.PUBLIC_URL + '/live.gif'} height={30} className="logo-image" alt="Live News" />
         </div>
