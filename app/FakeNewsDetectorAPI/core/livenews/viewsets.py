@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework import status
 
 import requests
@@ -38,6 +38,8 @@ def get_new_news_from_api_and_update():
     def scrap_img_from_web(url):
         print(url)
         r = requests.get(url)
+        if r.status_code != 200:
+            return "None"
         web_content = r.content
         soup = BeautifulSoup(web_content, 'html.parser')
         imgs = soup.find_all('article')[0].find_all('img', class_='dcr-evn1e9')
@@ -107,7 +109,7 @@ class LiveNewsPrediction(viewsets.ViewSet):
         """Handles GET request by displaying all newly retrieved in database."""
         all_live_news = LiveNews.objects.all().order_by('-id')[:10]
 
-        serializer = LiveNewsSerializer(all_live_news, many=True)
+        serializer = LiveNewsDetailedSerializer(all_live_news, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -121,3 +123,12 @@ class LiveNewsPrediction(viewsets.ViewSet):
         serializer = LiveNewsDetailedSerializer(news_prediction)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class LiveNewsByCategory(viewsets.ViewSet):
+    def list(self, request, category=None):
+        if category is not None:
+            live_news = LiveNews.objects.filter(news_category=category).order_by('-id')[:10]
+            serializer = LiveNewsDetailedSerializer(live_news, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Category not provided in the URL'}, status=status.HTTP_400_BAD_REQUEST)

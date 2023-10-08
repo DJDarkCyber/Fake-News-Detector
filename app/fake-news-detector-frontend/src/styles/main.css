@@ -167,3 +167,56 @@ body {
     margin-bottom: 30px;
 }
 
+.first-news {
+    display: flex;
+}
+
+.first-news-left-title {
+    float: left;
+    display: flex;
+    width: 50%;
+}
+
+.heading-title {
+    display: flex;
+    align-items: center;
+}
+
+.heading-word {
+    margin-right: 10px;
+}
+
+.heading-title hr {
+    width: 90%;
+}
+
+.new-news-container {
+    padding: 10px;
+}
+
+.new-news-container .news-row {
+    margin: 20px;
+}
+
+.nr-fkmwq {
+    display: flex;
+    align-items: center;
+}
+
+.h-fowjs {
+    
+}
+
+.cl-ksmao {
+    text-align: center;
+}
+
+.div-kjpql {
+    display: flex;
+    align-items: center;
+
+}
+
+.div-kpqsa {
+    margin-left: 10%;
+}
