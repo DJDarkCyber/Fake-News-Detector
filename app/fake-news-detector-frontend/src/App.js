@@ -7,6 +7,7 @@ import {
 import Home from './components/home';
 import NewsQuiz from './components/newsquiz';
 import CheckByTitle from './components/checkbytitle';
+import CategoryContainer from './components/category';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,12 @@ const router = createBrowserRouter([
   {
     path: '/checkbytitle',
     element: <CheckByTitle />,
+  },
+
+  {
+    path: '/category/:category',
+    element: <CategoryContainer />,
+
   }
 ]);
 

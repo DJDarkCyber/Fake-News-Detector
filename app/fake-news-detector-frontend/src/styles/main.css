@@ -195,12 +195,14 @@ body {
 }
 
 .new-news-container .news-row {
-    margin: 20px;
+    margin-bottom: 30px;
 }
 
 .nr-fkmwq {
     display: flex;
     align-items: center;
+    place-content: center;
+    place-items: center;
 }
 
 .h-fowjs {
@@ -214,9 +216,47 @@ body {
 .div-kjpql {
     display: flex;
     align-items: center;
+    place-content: center;
 
 }
 
 .div-kpqsa {
     margin-left: 10%;
+    display: flex;
+}
+
+.div-ipsdf {
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+    place-items: center;
+    padding: 10px;
+    width: 100%;
+    height: 300px;
+    text-align: center;
+}
+
+.div-oakpq {
+        text-align: center;
+        display: flex;
+        place-content: center;
+        place-items: center;
+        height: 300px;
+}
+
+.div-olapq {
+    height: 230px;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    place-content: center;
+    text-align: center;
+}
+
+.news-row-2 {
+    margin-bottom: 20px;
+}
+
+.news-row-3 {
+    margin-bottom: 20px;
 }
