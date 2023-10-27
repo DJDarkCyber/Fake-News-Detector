@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import { Check2, X } from 'react-bootstrap-icons';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 import Axios from 'axios';
@@ -13,6 +15,7 @@ const CategoryContainer = () => {
   const { category } = useParams();
 
   const [newsData, setNewsData] = useState([]);
+  const [newsDataLength, setNewsDataLength] = useState();
 
   
 
@@ -23,16 +26,24 @@ const CategoryContainer = () => {
         console.log('API response:', response);
         setNewsData(response.data);
         console.log('News data:', response.data);
+        console.log(response.data.length);
+        if (response.data.length < 10) {
+          toast.error("Not enough data");
+        }    
       })
       .catch((error) => {
         console.error('Error', error);
-      });
+      })
+     ;
   }
   
   useEffect(() => {
     console.log('Category:', category);
     fetchNewsData();
+    
   }, [category]);
+
+  
 
 
   return (
@@ -330,6 +341,8 @@ const CategoryContainer = () => {
         ):
         "Not Enough news to display"
         }
+
+<ToastContainer />
     </>
   );
 };

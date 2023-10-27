@@ -26,7 +26,7 @@ function Home() {
   const [mustSeeNews, setMustSeeNews] = useState([]);
   const [allNews, setAllNews] = useState([]);
 
-  const categories = ['Sport', 'Lifestyle', 'Arts'];
+  const categories = ['Sport', 'Lifestyle', 'Arts', 'News'];
 
   // Function to fetch live news data
   const fetchLiveNewsData = () => {
@@ -111,7 +111,7 @@ function Home() {
       <div className="live-news-container-header">
           <img src={process.env.PUBLIC_URL + '/live.gif'} height={30} className="logo-image" alt="Live News" />
         </div>
-      { liveNewsData.length > 0 ? (
+      { liveNewsData.length >= 10 ? (
          <Container className='new-news-container'>
            <Row className='news-row'>
              <Col xs={12} md={8}>
@@ -179,6 +179,7 @@ function Home() {
               </div>
              </Col>
            </Row>
+           <hr />
            <Row className='news-row-2'>
                   <Col sm>
                   <div className='div-olapq'>
@@ -289,6 +290,7 @@ function Home() {
                  </div>
                   </Col>
            </Row>
+           <hr />
            <Row className='news-row-3'>
                   <Col sm>
                   <div className='div-olapq'>
@@ -402,7 +404,7 @@ function Home() {
          </Container>
          )
          : 
-         null
+         "Not enough data to display :("
       }
 
       <div className='heading-title'>
@@ -410,7 +412,7 @@ function Home() {
         <hr></hr>
       </div>
 
-      { mustSeeNews.length > 0 ?
+      { mustSeeNews.length >= 4 ?
 
         <Container>
           <Row>
@@ -525,7 +527,7 @@ function Home() {
           </Row>
         </Container>
 
-          : null 
+          : "Not enough data to display" 
         }
 
       <div className='heading-title'>
@@ -534,7 +536,7 @@ function Home() {
       </div>
 
       <Container>
-      { allNews.length > 0 ?
+      { allNews.length >= 4 ?
 
         <Container>
           <Row>
@@ -621,22 +623,22 @@ function Home() {
                 </Col>
                 <Col sm>
                 <div className='div-olapq'>
-                {mustSeeNews[3].img_url === 'None' ? null : (
+                {allNews[3].img_url === 'None' ? null : (
                 <Row>
-                  <img src={mustSeeNews[3].img_url} width={300} height={150}></img>
+                  <img src={allNews[3].img_url} width={300} height={150}></img>
                   </Row>
                 )}
                 <Row>
-                  <h5>{mustSeeNews[3].title}</h5>
+                  <h5>{allNews[3].title}</h5>
                 </Row>
                 </div>
                 <div className='div-kjpql'>
                   <div>
-                  {new Date(mustSeeNews[3].publication_date).getDay()}/{new Date(mustSeeNews[3].publication_date).getMonth()}/{new Date(mustSeeNews[3].publication_date).getFullYear()} {new Date(mustSeeNews[3].publication_date).getHours()}:{new Date(mustSeeNews[3].publication_date).getMinutes()}
+                  {new Date(allNews[3].publication_date).getDay()}/{new Date(allNews[3].publication_date).getMonth()}/{new Date(allNews[3].publication_date).getFullYear()} {new Date(allNews[3].publication_date).getHours()}:{new Date(allNews[3].publication_date).getMinutes()}
                     
                   </div>
                   <div className='div-kpqsa'>
-                    {mustSeeNews[3].prediction === true ? 
+                    {allNews[3].prediction === true ? 
                     <div className='real-news-prediction'>
                       <Check2 /> Predicted as Real News
                     </div> : 
@@ -649,7 +651,7 @@ function Home() {
           </Row>
         </Container>
 
-          : null 
+          : "Not enough data to display" 
         }
       </Container>
      

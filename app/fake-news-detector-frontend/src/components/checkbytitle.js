@@ -4,6 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './header';
 import { Container, Form, Button } from 'react-bootstrap';
 import Axios from 'axios';
+import { Check2, X } from 'react-bootstrap-icons';
+
 
 function CheckByTitle() {
   document.title = 'News Guardian | Check news by title';
@@ -24,8 +26,10 @@ function CheckByTitle() {
       .then((response) => {
         if (response.data.prediction === true) {
           setPredictedValue('True');
+          toast.success("Real news!");
         } else {
           setPredictedValue('False');
+          toast.error("Fake news!", {icon: <X style={{color: 'white', backgroundColor: 'red'}}/>});
         }
       })
       .catch((error) => {
@@ -52,8 +56,9 @@ function CheckByTitle() {
       <Container fluid="lg" className="check-by-title-container">
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>News Title</Form.Label>
+            <Form.Label className='frm-opalq'>News Title</Form.Label>
             <Form.Control
+              className='frm-moqpa'
               type="text"
               placeholder="Enter news title..."
               as="textarea"
@@ -61,7 +66,7 @@ function CheckByTitle() {
               onChange={(e) => setNewsTitle(e.target.value)}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" className='button-17'>
             {isLoading ? 'Checking...' : 'Check'}
           </Button>
         </Form>
@@ -70,9 +75,9 @@ function CheckByTitle() {
       <Container className='prediction-result-container'>
 
         {predictedValue === 'True' ? (
-            <div className='true'>Predicted as real news!</div>
+            <div className='true'><div ><Check2 className='true-news-icon' /></div>Predicted as real news!</div>
         ) : predictedValue === 'False' ? (
-            <div className='false'>Predicted as fake news!</div>
+            <div className='false'><div ><X className='fake-news-icon' /></div>Predicted as fake news!</div>
         ) : null}
 
       </Container>
