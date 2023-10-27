@@ -1,7 +1,6 @@
 # Fake News Detector
 
-https://github.com/DJDarkCyber/Fake-News-Detector/assets/86729101/920520bc-50fd-420e-90b3-2cd64730e8cd
-
+[![Watch the video](https://i.postimg.cc/tgGgrMsN/25480.jpg)](http://artificialbrains.s3.amazonaws.com/news_guardian.mp4)
 
 
 Welcome to the Fake News Detector project! This project was created as part of my college coursework, and I'm excited to share it with the developer community. If you are interested in contributing to this project or using it as a basis for your own development, please read on.
@@ -12,21 +11,44 @@ FND is a web-based application designed to detect fake news articles. It uses ma
 
 ## Features
 
-- **News Quiz:** Test your fake news detection skills by taking our news quiz.
-- **Check News by Title:** Enter a news title to see if it's predicted as real or fake.
 - **Live News Monitoring:** View real-time predictions for news articles.
+![live_monitoring](https://imgur.com/9BVijIo.png)
+
+- **News Quiz:** Test your fake news detection skills by taking our news quiz.
+![news_quiz](https://imgur.com/w0xmk5f.png)
+
+- **Check News by Title:** Enter a news title to see if it's predicted as real or fake.
+![check_title](https://imgur.com/YDrfDVT.png)
+
 - **User Collaboration:** I encourage other developers to collaborate and improve this project further.
 
 ## Getting Started
 
 To get started with this project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/yourusername/fnd.git`
-2. Install the required dependencies: `npm install` or `yarn install`, `pip install requirements.txt`
-3. Start the development server: `npm start` or `yarn start`, `python3 manage.py runserver`
+1. Cloning the repository
 
+`git clone https://github.com/DJDarkCyber/Fake-News-Detector`
 
-You can find detailed installation and usage instructions in the project's documentation.
+2. Install the required libraries for python
+
+`cd Fake-News-Detector/app/FakeNewsDetectorAPI/ && pip install -r requirements.txt`
+
+3. Install the required libraries for js
+
+`cd ../fake-news-detector-frontend && npm install`
+
+4. Deployment
+
+Open terminal and cd to project root folder and run
+
+`cd /app/FakeNewsDetectorAPI/ && python manage.py runserver`
+
+Open another terminal and cd to project root folder and run
+
+`cd /app/fake-news-detector-frontend/ && npm start`
+
+All set if everything running without errors. Now the deployed web application should open in a browser. If not, open a browser and navigate to http://localhost:3000
 
 ## Contributing
 
