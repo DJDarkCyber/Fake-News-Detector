@@ -65,85 +65,49 @@ function NewsQuiz() {
         </div>
 
         <div className="radiogroup">
-        <div className='div-oqapl'>
-          <div className='div-ioalp'>
-          <div className="wrapper">
-            <input
-            className='state'
-              type='radio'
-              value='True'
-              name="app"
-              id="a"
-              checked={selectedAnswer === 'True'}
-              onChange={handleOptionChange}
-            />
-            <label className="label" for="a">
-            <div className="indicator"></div>
-            <span className="text">Real News</span>
-            </label>
+          <div className='div-oqapl'>
+              <div className='div-ioalp'>
+                <div className="wrapper">
+                  <input
+                  className='state'
+                    type='radio'
+                    value='True'
+                    name="app"
+                    id="a"
+                    checked={selectedAnswer === 'True'}
+                    onChange={handleOptionChange}
+                  />
+                  <label className="label" for="a">
+                    <div className="indicator"></div>
+                    <span className="text">Real News</span>
+                  </label>
+                </div>
+              <div className="wrapper">
+                  <input
+                  className='state'
+                    type='radio'
+                    value='False'
+                    name="app"
+                    id="b"
+                    checked={selectedAnswer === 'False'}
+                    onChange={handleOptionChange}
+                  />
+                  <label className="label" for="b">
+                    <div className="indicator"></div>
+                    <span className="text">Fake News</span>
+                  </label>
+              </div>
+            </div>
+            <div className='div-oapql'>
+              <Button variant='primary' type='submit' onClick={checkAnswer} className='button-17'>
+                Ok
+              </Button>
+              <Button onClick={getNewQuiz} variant='light' style={{ marginLeft: '10px' }} className='button-17'>
+                Get New Quiz
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className="wrapper">
-            <input
-            className='state'
-              type='radio'
-              value='False'
-              name="app"
-              id="b"
-              checked={selectedAnswer === 'False'}
-              onChange={handleOptionChange}
-            />
-            <label className="label" for="b">
-            <div className="indicator"></div>
-            <span className="text">Fake News</span>
-            </label>
-        </div>
-        </div>
-        <div className='div-oapql'>
-          <Button variant='primary' type='submit' onClick={checkAnswer} className='button-17'>
-            Ok
-          </Button>
-          <Button onClick={getNewQuiz} variant='light' style={{ marginLeft: '10px' }} className='button-17'>
-            Get New Quiz
-          </Button>
-        </div>
-
-        </div>
-        </div>
-
-        
-
-{/* <div className="radiogroup">
-  <div className="wrapper">
-    <input className="state" type="radio" name="app" id="a" value="a"></input>
-    <label className="label" for="a">
-      <div className="indicator"></div>
-      <span className="text">a) close</span>
-    </label>
-  </div>
-  <div className="wrapper">
-    <input className="state" type="radio" name="app" id="b" value="b"></input>
-    <label className="label" for="b">
-      <div className="indicator"></div>
-      <span className="text">b) remove</span>
-    </label>
-  </div>
-  <div className="wrapper">
-    <input className="state" type="radio" name="app" id="c" value="c"></input>
-    <label className="label" for="c">
-      <div className="indicator"></div>
-      <span className="text">c) delete</span>
-    </label>
-  </div>
-  <div class="wrapper">
-    <input className="state" type="radio" name="app" id="d" value="d"></input>
-    <label className="label" for="d">
-      <div className="indicator"></div>
-      <span className="text">d) all of the above</span>
-    </label>
-  </div>
-</div> */}
-
-
       </Container>
 
       <ToastContainer />

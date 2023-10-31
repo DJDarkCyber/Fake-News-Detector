@@ -1,28 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import Header from './header';
 import { Check2, X } from 'react-bootstrap-icons';
-import Axios, { all } from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import Axios from 'axios';
 
 function Home() {
   document.title = 'News Guardian | Home';
   let stage = 1;
 
-  const initialState = {
-    id: null,
-    news_category: '',
-    prediction: false,
-    publication_date: '',
-    section_id: '',
-    title: '',
-    type: '',
-    web_url: ''
-  }
-
   const [liveNewsData, setLiveNewsData] = useState([]);
-  const [selectedNewsId, setSelectedNewsId] = useState(null);
-  const [selectedNewsData, setSelectedNewsData] = useState(initialState);
   const [mustSeeNews, setMustSeeNews] = useState([]);
   const [allNews, setAllNews] = useState([]);
 
@@ -85,22 +71,6 @@ function Home() {
     return () => clearInterval(intervalId);
   }, []);
 
-  const infoAboutNews = (newsId) => {
-    Axios.get('http://127.0.0.1:8000/api/live/' + newsId + "/")
-      .then((response) => {
-        console.log(response.data);
-        setSelectedNewsId(newsId);
-        setSelectedNewsData(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
-  
-  const clearSelectedNews = () => {
-    setSelectedNewsId(null);
-  };
-
   let newsData = [];
   newsData = liveNewsData;
 
@@ -108,557 +78,255 @@ function Home() {
     <>
       <Header activeContainer={stage} />
       <Container className="home-container">
-      <div className="live-news-container-header">
+        <div className="live-news-container-header">
           <img src={process.env.PUBLIC_URL + '/live.gif'} height={30} className="logo-image" alt="Live News" />
         </div>
-      { liveNewsData.length >= 10 ? (
-         <Container className='new-news-container'>
-           <Row className='news-row'>
-             <Col xs={12} md={8}>
-               <Row className='nr-fkmwq'>
-                <div className='div-oakpq'>
-                 <Col xs={6} md={4} className='cl-ksmao'>
-                   <h4 className='h-fowjs'>{liveNewsData[0].title}</h4>
-                 </Col>
-                 { liveNewsData[0].img_url === 'None' ? 
-                 null :
-                    (
-                      <Col>
-                        <img src={liveNewsData[0].img_url}/>
-                      </Col>
-                    )
-                 }
-                </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[0].publication_date).getDay()}/{new Date(liveNewsData[0].publication_date).getMonth()}/{new Date(liveNewsData[0].publication_date).getFullYear()} {new Date(liveNewsData[0].publication_date).getHours()}:{new Date(liveNewsData[0].publication_date).getMinutes()}
-                    
+        { liveNewsData.length >= 10 ? (
+          <Container className='new-news-container'>
+            <Row className='news-row'>
+              <Col xs={12} md={8}>
+                <Row className='nr-fkmwq'>
+                  <div className='div-oakpq'>
+                    <Col xs={6} md={4} className='cl-ksmao'>
+                      <h4 className='h-fowjs'>{liveNewsData[0].title}</h4>
+                    </Col>
+                    { liveNewsData[0].img_url === 'None' ? 
+                      null :
+                        (
+                          <Col>
+                            <img src={liveNewsData[0].img_url}/>
+                          </Col>
+                        )
+                    }
                   </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[0].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
+                  <div className='div-kjpql'>
+                    <div>
+                      { new Date(liveNewsData[0].publication_date).getDay()}/{new Date(liveNewsData[0].publication_date).getMonth()}/{new Date(liveNewsData[0].publication_date).getFullYear()} {new Date(liveNewsData[0].publication_date).getHours()}:{new Date(liveNewsData[0].publication_date).getMinutes() }
+                      
+                    </div>
+                    <div className='div-kpqsa'>
 
-                 
-                 
-               </Row>
-             </Col>
-             <Col>
-             <div>
-              <div className='div-ipsdf'>
-                 {liveNewsData[1].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[1].img_url} width={500} height={200}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[1].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[1].publication_date).getDay()}/{new Date(liveNewsData[1].publication_date).getMonth()}/{new Date(liveNewsData[1].publication_date).getFullYear()} {new Date(liveNewsData[1].publication_date).getHours()}:{new Date(liveNewsData[1].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[1].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-              </div>
-             </Col>
-           </Row>
-           <hr />
-           <Row className='news-row-2'>
-                  <Col sm>
-                  <div className='div-olapq'>
-                  {liveNewsData[2].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[2].img_url} width={300} height={150}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[2].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[2].publication_date).getDay()}/{new Date(liveNewsData[2].publication_date).getMonth()}/{new Date(liveNewsData[2].publication_date).getFullYear()} {new Date(liveNewsData[2].publication_date).getHours()}:{new Date(liveNewsData[2].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[2].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                  </Col>
-                  <Col sm>
-                  <div className='div-olapq'>
-                  {liveNewsData[3].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[3].img_url} width={300} height={150}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[3].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[3].publication_date).getDay()}/{new Date(liveNewsData[3].publication_date).getMonth()}/{new Date(liveNewsData[3].publication_date).getFullYear()} {new Date(liveNewsData[3].publication_date).getHours()}:{new Date(liveNewsData[3].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[3].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                  </Col>
-                  <Col sm>
-                  <div className='div-olapq'>
-                  {liveNewsData[4].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[4].img_url} width={300} height={150}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[4].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[4].publication_date).getDay()}/{new Date(liveNewsData[4].publication_date).getMonth()}/{new Date(liveNewsData[4].publication_date).getFullYear()} {new Date(liveNewsData[4].publication_date).getHours()}:{new Date(liveNewsData[4].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[4].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                  </Col>
-                  <Col sm>
-                  <div className='div-olapq'>
-                  {liveNewsData[5].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[5].img_url} width={300} height={150}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[5].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[5].publication_date).getDay()}/{new Date(liveNewsData[5].publication_date).getMonth()}/{new Date(liveNewsData[5].publication_date).getFullYear()} {new Date(liveNewsData[5].publication_date).getHours()}:{new Date(liveNewsData[5].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[5].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                  </Col>
-           </Row>
-           <hr />
-           <Row className='news-row-3'>
-                  <Col sm>
-                  <div className='div-olapq'>
-                  {liveNewsData[6].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[6].img_url} width={300} height={150}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[6].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[6].publication_date).getDay()}/{new Date(liveNewsData[6].publication_date).getMonth()}/{new Date(liveNewsData[6].publication_date).getFullYear()} {new Date(liveNewsData[6].publication_date).getHours()}:{new Date(liveNewsData[6].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[6].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                  </Col>
-                  <Col sm>
-                  <div className='div-olapq'>
-                  {liveNewsData[7].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[7].img_url} width={300} height={150}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[7].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[7].publication_date).getDay()}/{new Date(liveNewsData[7].publication_date).getMonth()}/{new Date(liveNewsData[7].publication_date).getFullYear()} {new Date(liveNewsData[7].publication_date).getHours()}:{new Date(liveNewsData[7].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[7].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                  </Col>
-                  <Col sm>
-                  <div className='div-olapq'>
-                  {liveNewsData[8].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[8].img_url} width={300} height={150}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[8].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[8].publication_date).getDay()}/{new Date(liveNewsData[8].publication_date).getMonth()}/{new Date(liveNewsData[8].publication_date).getFullYear()} {new Date(liveNewsData[8].publication_date).getHours()}:{new Date(liveNewsData[8].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[8].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                  </Col>
-                  <Col sm>
-                  <div className='div-olapq'>
-                  {liveNewsData[9].img_url === 'None' ? null : (
-                  <Row>
-                    <img src={liveNewsData[9].img_url} width={300} height={150}></img>
-                    </Row>
-                 )}
-                 <Row>
-                    <h5>{liveNewsData[9].title}</h5>
-                 </Row>
-                 </div>
-                 <div className='div-kjpql'>
-                  <div>
-                  {new Date(liveNewsData[9].publication_date).getDay()}/{new Date(liveNewsData[9].publication_date).getMonth()}/{new Date(liveNewsData[9].publication_date).getFullYear()} {new Date(liveNewsData[9].publication_date).getHours()}:{new Date(liveNewsData[9].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {liveNewsData[9].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                  </Col>
-           </Row>
-         </Container>
-         )
-         : 
-         "Not enough data to display :("
-      }
+                      { liveNewsData[0].prediction === true ? 
+                        <div className='real-news-prediction'>
+                          <Check2 /> Predicted as Real News
+                        </div> : 
+                        <div className='fake-news-prediction'>
+                          <X /> Predicted as Fake News
+                        </div>
+                      }
 
-      <div className='heading-title'>
-        <h3 className='heading-word'>Must See</h3>
-        <hr></hr>
-      </div>
-
-      { mustSeeNews.length >= 4 ?
-
-        <Container>
-          <Row>
-                <Col sm>
-                  <div className='div-olapq'>
-                {mustSeeNews[0].img_url === 'None' ? null : (
-                <Row>
-                  <img src={mustSeeNews[0].img_url} width={300} height={150}></img>
-                  </Row>
-                )}
-                <Row>
-                  <h5>{mustSeeNews[0].title}</h5>
+                    </div>
+                  </div>
                 </Row>
+              </Col>
+              <Col>
+                <div>
+                  <div className='div-ipsdf'>
+                    { liveNewsData[1].img_url === 'None' ? null : (
+                      <Row>
+                        <img src={liveNewsData[1].img_url} width={500} height={200}></img>
+                        </Row>
+                    ) }
+                    <Row>
+                        <h5>{liveNewsData[1].title}</h5>
+                    </Row>
+                  </div>
+                  <div className='div-kjpql'>
+                    <div>
+                      { new Date(liveNewsData[1].publication_date).getDay()}/{new Date(liveNewsData[1].publication_date).getMonth()}/{new Date(liveNewsData[1].publication_date).getFullYear()} {new Date(liveNewsData[1].publication_date).getHours()}:{new Date(liveNewsData[1].publication_date).getMinutes() }
+                    </div>
+                    <div className='div-kpqsa'>
+                      { liveNewsData[1].prediction === true ? 
+                          <div className='real-news-prediction'>
+                            <Check2 /> Predicted as Real News
+                          </div> : 
+                          <div className='fake-news-prediction'>
+                            <X /> Predicted as Fake News
+                          </div>
+                      }
+                    </div>
+                  </div>
                 </div>
-                <div className='div-kjpql'>
-                  <div>
-                  {new Date(mustSeeNews[0].publication_date).getDay()}/{new Date(mustSeeNews[0].publication_date).getMonth()}/{new Date(mustSeeNews[0].publication_date).getFullYear()} {new Date(mustSeeNews[0].publication_date).getHours()}:{new Date(mustSeeNews[0].publication_date).getMinutes()}
-                    
+              </Col>
+            </Row>
+            <hr />
+            
+            <Row className="news-row-2">
+              {liveNewsData.slice(2, 6).map((news, index) => (
+                <Col sm key={index}>
+                  <div className="div-olapq">
+                    {news.img_url !== 'None' && (
+                      <Row>
+                        <img src={news.img_url} width={300} height={150} alt={`News ${index + 2} Image`} />
+                      </Row>
+                    )}
+                    <Row>
+                      <h5>{news.title}</h5>
+                    </Row>
                   </div>
-                  <div className='div-kpqsa'>
-                    {mustSeeNews[0].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
+                  <div className="div-kjpql">
+                    <div>
+                      {`${new Date(news.publication_date).getDay()}/${new Date(news.publication_date).getMonth()}/${new Date(news.publication_date).getFullYear()} ${new Date(news.publication_date).getHours()}:${new Date(news.publication_date).getMinutes()}`}
+                    </div>
+                    <div className="div-kpqsa">
+                      {news.prediction ? (
+                        <div className="real-news-prediction">
+                          <Check2 /> Predicted as Real News
+                        </div>
+                      ) : (
+                        <div className="fake-news-prediction">
+                          <X /> Predicted as Fake News
+                        </div>
+                      )}
+                    </div>
                   </div>
-                 </div>
                 </Col>
-                <Col sm>
-                <div className='div-olapq'>
-                {mustSeeNews[1].img_url === 'None' ? null : (
-                <Row>
-                  <img src={mustSeeNews[1].img_url} width={300} height={150}></img>
-                  </Row>
-                )}
-                <Row className='row-lpapo'>
-                  <h5>{mustSeeNews[1].title}</h5>
-                </Row>
-                </div>
-                <div className='div-kjpql'>
-                  <div>
-                  {new Date(mustSeeNews[1].publication_date).getDay()}/{new Date(mustSeeNews[1].publication_date).getMonth()}/{new Date(mustSeeNews[1].publication_date).getFullYear()} {new Date(mustSeeNews[1].publication_date).getHours()}:{new Date(mustSeeNews[1].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {mustSeeNews[1].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                </Col>
-                <Col sm>
-                <div className='div-olapq'>
-                {mustSeeNews[2].img_url === 'None' ? null : (
-                <Row>
-                  <img src={mustSeeNews[2].img_url} width={300} height={150}></img>
-                  </Row>
-                )}
-                <Row>
-                  <h5>{mustSeeNews[2].title}</h5>
-                </Row>
-                </div>
-                <div className='div-kjpql'>
-                  <div>
-                  {new Date(mustSeeNews[2].publication_date).getDay()}/{new Date(mustSeeNews[2].publication_date).getMonth()}/{new Date(mustSeeNews[2].publication_date).getFullYear()} {new Date(mustSeeNews[2].publication_date).getHours()}:{new Date(mustSeeNews[2].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {mustSeeNews[2].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                </Col>
-                <Col sm>
-                <div className='div-olapq'>
-                {mustSeeNews[3].img_url === 'None' ? null : (
-                <Row>
-                  <img src={mustSeeNews[3].img_url} width={300} height={150}></img>
-                  </Row>
-                )}
-                <Row>
-                  <h5>{mustSeeNews[3].title}</h5>
-                </Row>
-                </div>
-                <div className='div-kjpql'>
-                  <div>
-                  {new Date(mustSeeNews[3].publication_date).getDay()}/{new Date(mustSeeNews[3].publication_date).getMonth()}/{new Date(mustSeeNews[3].publication_date).getFullYear()} {new Date(mustSeeNews[3].publication_date).getHours()}:{new Date(mustSeeNews[3].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {mustSeeNews[3].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                </Col>
-          </Row>
-        </Container>
+              ))}
+            </Row>
 
-          : "Not enough data to display" 
+            <hr />
+
+            <Row className="news-row-3">
+              {liveNewsData.slice(6, 10).map((news, index) => (
+                <Col sm key={index}>
+                  <div className="div-olapq">
+                    {news.img_url !== 'None' && (
+                      <Row>
+                        <img src={news.img_url} width={300} height={150} alt={`News ${index + 6} Image`} />
+                      </Row>
+                    )}
+                    <Row>
+                      <h5>{news.title}</h5>
+                    </Row>
+                  </div>
+                  <div className="div-kjpql">
+                    <div>
+                      {`${new Date(news.publication_date).getDay()}/${new Date(news.publication_date).getMonth()}/${new Date(news.publication_date).getFullYear()} ${new Date(news.publication_date).getHours()}:${new Date(news.publication_date).getMinutes()}`}
+                    </div>
+                    <div className="div-kpqsa">
+                      {news.prediction ? (
+                        <div className="real-news-prediction">
+                          <Check2 /> Predicted as Real News
+                        </div>
+                      ) : (
+                        <div className="fake-news-prediction">
+                          <X /> Predicted as Fake News
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+
+          </Container>
+          )
+          : 
+          "Not enough data to display :("
         }
 
-      <div className='heading-title'>
-        <h3 className='heading-word'>All news</h3>
-        <hr></hr>
-      </div>
+        <div className='heading-title'>
+          <h3 className='heading-word'>Must See</h3>
+          <hr></hr>
+        </div>
 
-      <Container>
-      { allNews.length >= 4 ?
+        {
+          mustSeeNews.length >= 4 ? (
+            <Container>
+              <Row>
+                {mustSeeNews.slice(0, 4).map((news, index) => (
+                  <Col sm key={index}>
+                    <div className="div-olapq">
+                      {news.img_url !== "None" ? (
+                        <Row>
+                          <img src={news.img_url} width={300} height={150} alt={`Must-See News ${index} Image`} />
+                        </Row>
+                      ) : null}
+                      <Row>
+                        <h5>{news.title}</h5>
+                      </Row>
+                    </div>
+                    <div className="div-kjpql">
+                      <div>
+                        {`${new Date(news.publication_date).getDay()}/${new Date(news.publication_date).getMonth()}/${new Date(news.publication_date).getFullYear()} ${new Date(news.publication_date).getHours()}:${new Date(news.publication_date).getMinutes()}`}
+                      </div>
+                      <div className="div-kpqsa">
+                        {news.prediction ? (
+                          <div className="real-news-prediction">
+                            <Check2 /> Predicted as Real News
+                          </div>
+                        ) : (
+                          <div className="fake-news-prediction">
+                            <X /> Predicted as Fake News
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </Container>
+          ) : (
+            "Not enough data to display"
+          )
+        }
+
+        <div className='heading-title'>
+          <h3 className='heading-word'>All news</h3>
+          <hr></hr>
+        </div>
 
         <Container>
-          <Row>
-                <Col sm>
-                <div className='div-olapq'>
-                {allNews[0].img_url === 'None' ? null : (
-                <Row>
-                  <img src={allNews[0].img_url} width={300} height={150}></img>
-                  </Row>
-                )}
-                <Row>
-                  <h5>{allNews[0].title}</h5>
-                </Row>
-                </div>
-                <div className='div-kjpql'>
-                  <div>
-                  {new Date(allNews[0].publication_date).getDay()}/{new Date(allNews[0].publication_date).getMonth()}/{new Date(allNews[0].publication_date).getFullYear()} {new Date(allNews[0].publication_date).getHours()}:{new Date(allNews[0].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {allNews[0].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                </Col>
-                <Col sm>
-                <div className='div-olapq'>
-                {allNews[1].img_url === 'None' ? null : (
-                <Row>
-                  <img src={allNews[1].img_url} width={300} height={150}></img>
-                  </Row>
-                )}
-                <Row>
-                  <h5>{allNews[1].title}</h5>
-                </Row>
-                </div>
-                <div className='div-kjpql'>
-                  <div>
-                  {new Date(allNews[1].publication_date).getDay()}/{new Date(allNews[1].publication_date).getMonth()}/{new Date(allNews[1].publication_date).getFullYear()} {new Date(allNews[1].publication_date).getHours()}:{new Date(allNews[1].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {allNews[1].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                </Col>
-                <Col sm>
-                <div className='div-olapq'>
-                {allNews[2].img_url === 'None' ? null : (
-                <Row>
-                  <img src={allNews[2].img_url} width={300} height={150}></img>
-                  </Row>
-                )}
-                <Row>
-                  <h5>{allNews[2].title}</h5>
-                </Row>
-                </div>
-                <div className='div-kjpql'>
-                  <div>
-                  {new Date(allNews[2].publication_date).getDay()}/{new Date(allNews[2].publication_date).getMonth()}/{new Date(allNews[2].publication_date).getFullYear()} {new Date(allNews[2].publication_date).getHours()}:{new Date(allNews[2].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {allNews[2].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                </Col>
-                <Col sm>
-                <div className='div-olapq'>
-                {allNews[3].img_url === 'None' ? null : (
-                <Row>
-                  <img src={allNews[3].img_url} width={300} height={150}></img>
-                  </Row>
-                )}
-                <Row>
-                  <h5>{allNews[3].title}</h5>
-                </Row>
-                </div>
-                <div className='div-kjpql'>
-                  <div>
-                  {new Date(allNews[3].publication_date).getDay()}/{new Date(allNews[3].publication_date).getMonth()}/{new Date(allNews[3].publication_date).getFullYear()} {new Date(allNews[3].publication_date).getHours()}:{new Date(allNews[3].publication_date).getMinutes()}
-                    
-                  </div>
-                  <div className='div-kpqsa'>
-                    {allNews[3].prediction === true ? 
-                    <div className='real-news-prediction'>
-                      <Check2 /> Predicted as Real News
-                    </div> : 
-                    <div className='fake-news-prediction'>
-                      <X /> Predicted as Fake News
-                    </div>}
-                  </div>
-                 </div>
-                </Col>
-          </Row>
+          {allNews.length >= 4 ? (
+            <Container>
+              <Row>
+                {allNews.slice(0, 4).map((news, index) => (
+                  <Col sm key={index}>
+                    <div className="div-olapq">
+                      {news.img_url !== "None" ? (
+                        <Row>
+                          <img
+                            src={news.img_url}
+                            width={300}
+                            height={150}
+                            alt={`All News ${index} Image`}
+                          />
+                        </Row>
+                      ) : null}
+                      <Row>
+                        <h5>{news.title}</h5>
+                      </Row>
+                    </div>
+                    <div className="div-kjpql">
+                      <div>
+                        {`${new Date(news.publication_date).getDay()}/${
+                          new Date(news.publication_date).getMonth()
+                        }/${new Date(news.publication_date).getFullYear()} ${new Date(
+                          news.publication_date
+                        ).getHours()}:${new Date(news.publication_date).getMinutes()}`}
+                      </div>
+                      <div className="div-kpqsa">
+                        {news.prediction ? (
+                          <div className="real-news-prediction">
+                            <Check2 /> Predicted as Real News
+                          </div>
+                        ) : (
+                          <div className="fake-news-prediction">
+                            <X /> Predicted as Fake News
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </Container>
+          ) : (
+            "Not enough data to display"
+          )}
         </Container>
 
-          : "Not enough data to display" 
-        }
       </Container>
-     
-        
-        
-      </Container>
-      <ToastContainer />
     </>
   );
 }
