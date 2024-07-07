@@ -42,11 +42,11 @@ To get started with this project, follow these steps:
 
 Open terminal and cd to project root folder and run
 
-`cd /app/FakeNewsDetectorAPI/ && python manage.py runserver`
+`cd app/FakeNewsDetectorAPI/ && python manage.py migrate && python manage.py runserver`
 
 Open another terminal and cd to project root folder and run
 
-`cd /app/fake-news-detector-frontend/ && npm start`
+`cd app/fake-news-detector-frontend/ && npm start`
 
 All set if everything running without errors. Now the deployed web application should open in a browser. If not, open a browser and navigate to http://localhost:3000
 
@@ -62,6 +62,8 @@ I welcome contributions from fellow developers. If you have ideas for new featur
 ## Contact
 
 If you have any questions or suggestions, feel free to reach out to me at [dark_agent_437@protonmail.com](dark_agent_437@protonmail.com).
+
+If you have any issues, raise [issue](https://github.com/DJDarkCyber/Fake-News-Detector/issues).
 
 Thank you for considering contributing to the Fake News Detector project. Together, we can make a positive impact on the fight against misinformation.
 
