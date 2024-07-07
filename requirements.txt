@@ -1,3 +1,0 @@
-django==4.2.3
-djangorestframework==3.14.0
-django-filter==26.0
