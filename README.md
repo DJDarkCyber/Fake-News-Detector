@@ -44,7 +44,7 @@ Open terminal and cd to project root folder and run
 
 `cd app/FakeNewsDetectorAPI/ && python manage.py migrate && python manage.py runserver`
 
-To load game data,
+To load quiz data,
 
 `python manage.py quiz_data_loader game_data/game_data.csv`
 
