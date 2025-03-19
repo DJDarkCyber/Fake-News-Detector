@@ -44,6 +44,10 @@ Open terminal and cd to project root folder and run
 
 `cd app/FakeNewsDetectorAPI/ && python manage.py migrate && python manage.py runserver`
 
+To load game data,
+
+`python manage.py loaddata game_data/game_data.csv`
+
 Open another terminal and cd to project root folder and run
 
 `cd app/fake-news-detector-frontend/ && npm start`
