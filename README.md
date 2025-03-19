@@ -46,7 +46,7 @@ Open terminal and cd to project root folder and run
 
 To load game data,
 
-`python manage.py loaddata game_data/game_data.csv`
+`python manage.py quiz_data_loader game_data/game_data.csv`
 
 Open another terminal and cd to project root folder and run
 
